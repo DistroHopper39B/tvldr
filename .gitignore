@@ -7,3 +7,5 @@ debian/
 initramfs/
 initrd_tmp/
 ubuntu/
+.vscode/
+.idea/
