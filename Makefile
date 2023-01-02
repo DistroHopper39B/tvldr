@@ -6,8 +6,8 @@
 #
 ARCH	= i386
 
-CC  := o32-clang
-LD  := i386-apple-darwin8-ld
+CC  := i386-apple-darwin8-clang-10
+LD  := i386-apple-darwin8-ld-10
 LDFLAGS =
 
 # start.o must be 1st in the link order (ld below)
