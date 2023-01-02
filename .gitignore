@@ -8,3 +8,5 @@ initramfs/
 initrd_tmp/
 ubuntu/
 *.objdump
+.vscode/
+.idea/
