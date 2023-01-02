@@ -11,12 +11,11 @@
 // includes an antialiased (4bpp) proportional bitmap font (n x 16 pixel)
 
 #include <stdarg.h>
-
 #include "types.h"
 #include "darwin_code.h"
 
+#define COM1 0x3F8 // <- the COM1 serial address
 extern int vsprintf(char *buf, const char *fmt, va_list args);
-extern void PrintToSerial(const char *szBuffer);
 
 const unsigned short waStarts[] = { // starting positions of each ASCII character
  0, 4, 12, 20, 29, 42, 53, 56, // <-- (
@@ -599,6 +598,29 @@ void BootVideoChunkedPrint(const char *szBuffer) {
 			VIDEO_CURSOR_POSX = vmode.xmargin << 2;
 		}
 	}
+}
+
+// Serial code
+
+// outb asm->c
+void outb(uint16_t port, uint8_t val)
+{
+    __asm__ __volatile__ ( "outb %0, %1" : : "a"(val), "Nd"(port) );
+}
+
+// inb asm->c (not used yet)
+uint8_t inb(uint16_t port)
+{
+    uint8_t ret;
+    __asm__ __volatile__ ( "inb %1, %0" : "=a"(ret) : "Nd"(port) );
+    return ret;
+}
+
+void PrintToSerial(const char *szBuffer) {
+   int i;
+   for (i = 0; szBuffer[i] != '\0'; i++) {
+      outb(COM1, szBuffer[i]);
+   }
 }
 
 int printk(const char *szFormat, ...) {  // printk displays to video and serial
