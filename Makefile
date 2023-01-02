@@ -6,12 +6,12 @@
 #
 ARCH	= i386
 
-CC  := /usr/bin/gcc
-LD  := /usr/bin/ld
+CC  := o32-clang
+LD  := i386-apple-darwin8-ld
 LDFLAGS =
 
 # start.o must be 1st in the link order (ld below)
-OBJ	= start.o vsprintf.o console.o utils.o elilo_code.o darwin_code.o linux_code.o boot_loader.o
+OBJ	= start.o vsprintf.o serial.o console.o utils.o elilo_code.o darwin_code.o linux_code.o boot_loader.o
 
 mach_kernel: $(KERN_OBJ) $(OBJ)
 	$(LD) $(LDFLAGS) -arch $(ARCH) -o mach_kernel $(OBJ) \

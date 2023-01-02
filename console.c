@@ -17,7 +17,7 @@
 
 extern int vsprintf(char *buf, const char *fmt, va_list args);
 
-const unsigned short waStarts[] = {
+const unsigned short waStarts[] = { // starting positions of each ASCII character
  0, 4, 12, 20, 29, 42, 53, 56, // <-- (
  62, 67, 73, 81, 85, 91, 95, 100, // <-- 0
  109, 117, 125, 133, 142, 149, 158, 166, // <-- 8
@@ -441,7 +441,7 @@ unsigned int BootVideoGetCharacterWidth(u8 bCharacter, bool fDouble) {
 
 	if (fDouble) nSpace = 8;
 
-		// we only have glyphs for 0x21 through 0x7e inclusive
+		// we only have glyphs for 0x21 through 0x7e inclusive (exclamation mark -> tilde)
 
 	if (bCharacter<0x21) return nSpace;
 	if (bCharacter>0x7e) return nSpace;

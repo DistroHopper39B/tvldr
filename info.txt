@@ -1,0 +1,57 @@
+<INFO.TXT>
+Info on what all these files mean.
+
+Linking order: start.s vsprintf.c ** console.c utils.c elilo_code.c darwin_code.c linux_code.c boot_loader.c
+
+start.s:
+    seels to move some memory addresses and setup registers
+    calls _load_linux == located in boot_loader.c
+vsprintf.c:
+    part of linux kernel, it seems
+    implementation of a c function??
+    requires stdarg.h
+    seems to be used once in console.c to define printk
+    sprintf is also here, which is used in other places
+console.c:
+    probably requires minimal to no changes
+    antialiased font (what the actual fuck?)
+    i want to get this font working in the menu screen because what the fuck. thats cool.
+    printk is also defined in this file, function that displays to video
+    requires types.h, darwin_code.h
+utils.c:
+    requires utils.h, types.h
+    seems to define time and sleep
+    some string stuff too
+    for debugging purposes, i think (references to sleep throughout the project are commented)
+    doesn't seem to do anything on its own lol
+    ...and because i can serial debug, i shouldn't need the sleep stuff
+utils.h:
+    seems to just be some definitions of stuff relating to sleep and seconds, not sure exactly
+    requies types.h
+elilo_code.c:
+    references the elilo bootloader for linux [efi linux loader]
+    haitch pea !!
+    linux kernel load stuff, probably not anything required
+    requires types.h, linux_code.h, and darwin_code.h
+    however, it also includes framebuffer stuff that will need to be moved into a different file (i don't need
+    efifb or imacfb, i just need vesafb)
+    convert efi memmap to e820 memmap as well
+    there are debugging comments left to print the memmap, will need these probably
+darwin_code.c:
+    requires utils.h and darwin_code.h
+    seems to have something to do with mach-o stuff i think?
+    ideally can get working without much modification
+darwin_code.h:
+    requires types.h
+    seems to have some info on boot parameters relating to memmap
+    ideally i can just use this instead of messing with anything else
+linux_code.c:
+    bunch of memory map stuff that is probably important
+    640k initial memory stuff, plus acpi, i guess it depends on which thing is a thing lol
+    acpi is barely important tbh, it will be the last thing i will deal with
+linux_code.h:
+    bunch of memory remap stuff for efi with memory addresses
+    hopefully freeldr can just handle this lol
+boot_loader.c:
+    requires types.h, utils.h, linux_code.h, elilo_code.h, darwin_code.h
+    initial code stuff
