@@ -39,11 +39,9 @@
 #include "linux_code.h"
 #include "elilo_code.h"
 #include "darwin_code.h"
-#include "serial.h"
 
 extern int sprintf(char *buf, const char *fmt, ...);
 extern int printk(const char *szFormat, ...);
-extern int init_serial();
 //
 mach_boot_parms *mach_bp;
 
@@ -81,8 +79,6 @@ void load_linux(unsigned int args)
 	VIDEO_CURSOR_POSY = 0;
 	VIDEO_ATTR = 0xffc8c8c8;
 	//
-	printk("ATV: Going to call init_serial...\n");
-	init_serial();
 	printk("ATV: ATV_BootLoader v0.8 (http://atv-bootloader.googlecode.com/)\n");
 	printk("ATV: Copyright (C) 2008 ATV Bootloader Team - Licensed under the GPL v2\n");
 	printk("ATV: FB Start 0x%08X, with %d height %d rowb %d depth %d\n",

@@ -10,3 +10,4 @@ ubuntu/
 *.objdump
 .vscode/
 .idea/
+vbxrebuild.sh

@@ -16,6 +16,7 @@
 #include "darwin_code.h"
 
 extern int vsprintf(char *buf, const char *fmt, va_list args);
+extern void PrintToSerial(const char *szBuffer);
 
 const unsigned short waStarts[] = { // starting positions of each ASCII character
  0, 4, 12, 20, 29, 42, 53, 56, // <-- (
@@ -600,7 +601,7 @@ void BootVideoChunkedPrint(const char *szBuffer) {
 	}
 }
 
-int printk(const char *szFormat, ...) {  // printk displays to video
+int printk(const char *szFormat, ...) {  // printk displays to video and serial
 	char    szBuffer[512*2];
 	u16     wLength = 0;
 	va_list argList;
@@ -615,6 +616,7 @@ int printk(const char *szFormat, ...) {  // printk displays to video
 	szBuffer[wLength] = '\0';
 
 	BootVideoChunkedPrint(szBuffer);
+	PrintToSerial(szBuffer);
 
 	return wLength;
 }
