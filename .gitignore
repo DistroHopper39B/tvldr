@@ -7,3 +7,4 @@ debian/
 initramfs/
 initrd_tmp/
 ubuntu/
+*.objdump

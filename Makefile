@@ -31,7 +31,7 @@ mach_kernel: $(KERN_OBJ) $(OBJ)
         -sectcreate __TEXT __initrd initrd.img
 
 %.o:	%.c
-	$(CC) -c -arch $(ARCH) -static -nostdlib -fno-stack-protector -o $@ -c $<
+	$(CC) -c -arch $(ARCH) -static -nostdlib -fno-stack-protector -O0 -o $@ -c $<
 
 %.o:	%.s
 	$(CC) -c -arch $(ARCH) -static -nostdlib -DASSEMBLER -o $@ -c $<
