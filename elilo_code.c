@@ -64,6 +64,8 @@ uint32_t kernel_size = 0;
 void *initrd_start = NULL;
 uint32_t initrd_size = 0;
 
+extern void print_e820_memory_map(boot_params_t *bp);
+
 /*------------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------------*/
 int create_boot_params(boot_params_t *bp, char *cmdline)
@@ -258,7 +260,7 @@ int create_boot_params(boot_params_t *bp, char *cmdline)
 	printk("ATV: converting EFI memmap -> e820 memmap\n");
 	fill_e820map(bp);
 	//
-	//print_e820_memory_map(bp);
+	print_e820_memory_map(bp);
 	//sleep(60);
 	//
 	//

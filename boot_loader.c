@@ -79,17 +79,17 @@ void load_linux(unsigned int args)
 	VIDEO_CURSOR_POSY = 0;
 	VIDEO_ATTR = 0xffc8c8c8;
 	//
-	printk("ATV: ATV_BootLoader v0.8 (http://atv-bootloader.googlecode.com/)\n");
-	printk("ATV: Copyright (C) 2008 ATV Bootloader Team - Licensed under the GPL v2\n");
-	printk("ATV: FB Start 0x%08X, with %d height %d rowb %d depth %d\n",
+	printk("ATV: This code is not ready for production.\n");
+	printk("ATV: Based on atv-bootloader (https://github.com/davilla/atv-bootloader)\n");
+	printk("ATV: FB Start 0x%08X, width %d height %d rowb %d depth %d\n",
 		mach_bp->video.addr,
 		mach_bp->video.width,
 		mach_bp->video.height,
 		mach_bp->video.rowb,
 		mach_bp->video.depth);
 
-	//printk("mach_bp->devtree_len=0x%08X, mach_bp->devtree_ptr=0x%08X",
-	//	mach_bp->devtree_len, mach_bp->devtree_ptr);
+	printk("mach_bp->devtree_len=0x%08X, mach_bp->devtree_ptr=0x%08X\n",
+		mach_bp->devtree_len, mach_bp->devtree_ptr);
 	//sleep(10);
 
 	// find the kernel and load it in the proper location
@@ -115,7 +115,6 @@ void load_linux(unsigned int args)
 	//printk("ATV: initrd_ptr = 0x%08X, initrd_len = 0x%08X\n", initrd_ptr, initrd_len);
 	initrd_start = initrd_ptr;
 	initrd_size  = initrd_len;
-
 	// setup the kernel boot parameters
 	// zero boot param structure
 	memset(bp, 0x00, BOOT_PARAM_MEMSIZE);
