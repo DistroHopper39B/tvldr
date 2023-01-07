@@ -42,6 +42,13 @@
 
 extern int sprintf(char *buf, const char *fmt, ...);
 extern int printk(const char *szFormat, ...);
+
+volatile uint32_t VIDEO_CURSOR_POSY;
+volatile uint32_t VIDEO_CURSOR_POSX;
+volatile uint32_t VIDEO_ATTR;
+
+volatile CURRENT_VIDEO_MODE_DETAILS vmode;
+
 //
 mach_boot_parms *mach_bp;
 
