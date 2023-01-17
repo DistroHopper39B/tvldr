@@ -101,22 +101,21 @@ void load_linux(unsigned int args)
 
 	// find the kernel and load it in the proper location
 	kernel_ptr = (unsigned char *) getsectdatafromheader(&_mh_execute_header, "__TEXT", "__vmlinuz", &kernel_len);
-	//printk("ATV: kernel_ptr = 0x%08X, kernel_len = 0x%08X\n", kernel_ptr, kernel_len);
+	printk("ATV: kernel_ptr = 0x%08X, kernel_len = 0x%08X\n", kernel_ptr, kernel_len);
 	// kernel integrity check
-	if (kernel_ptr[0x1FE] != 0x55 || kernel_ptr[0x1FF] != 0xAA) {
-		printk("ATV: kernel_ptr[0x1FE] = 0x%X, kernel_ptr[0x1FF] = 0x%X\n", kernel_ptr[0x1FE], kernel_ptr[0x1FF]);
-		printk("ATV: Kernel is not a vmlinuz or bzImage kernel image.\n");
+
+	printk("ATV: kernel_ptr[0xD8] = 0x%c, kernel_ptr[0xD9] = 0x%c\n", kernel_ptr[0xD8], kernel_ptr[0xD9]);
+	if (kernel_ptr[0xD8] != 0x6f || kernel_ptr[0xD9] != 0x61) {
+		
+		printk("ATV: Fuck you\n");
 		while (1);
+		
 	}
 	// load kernel into it in the proper location (1M)
 	kernel_start = (VOID *) 0x00100000;
 	// zero kernel destination in ram memory
 	memset(kernel_start, 0x00, KERNEL_RESERVE_SIZE);
-	// compute kernel size from actual kernel using zero-page setup_sectors (512 bytes per sector)
-	kernel_size = kernel_len - ((kernel_ptr[0x1F1] + 1) * 512);
-	// copy loaded kernel to base memory location
-	memcpy(kernel_start, &kernel_ptr[(kernel_ptr[0x1F1] + 1) * 512], kernel_size);
-
+/*
 	// find possible initrd, start_kernel will handle loading into a proper location)
 	initrd_ptr   = (unsigned char *) getsectdatafromheader(&_mh_execute_header, "__TEXT", "__initrd", &initrd_len);
 	//printk("ATV: initrd_ptr = 0x%08X, initrd_len = 0x%08X\n", initrd_ptr, initrd_len);
@@ -131,14 +130,14 @@ void load_linux(unsigned int args)
 	// create linux kernel command line params from mach-o passed command line params
 	// this comes from com.apple.Boot.plist under <key>Kernel Flags</key>
 	sprintf(cmdline, "%s", mach_bp->cmdline);
-	/*
+	
 	sprintf(cmdline, "%s video=imacfb:appletv,width:%d,height:%d,linelength:%d,base:%d",
 		mach_bp->cmdline,
 		mach_bp->video.width,
 		mach_bp->video.height,
 		mach_bp->video.rowb,
 		mach_bp->video.addr);
-	*/
+	
 	printk("ATV: kernel command line-> %s\n", cmdline);
 
 	// now format the linux kernel boot params
@@ -152,5 +151,12 @@ void load_linux(unsigned int args)
 	// start_kernel(kd.kentry, bp);
 	printk("ATV: error something's is wrong\n");
 
+*/
+
+
+
+	void (*kernel_ptr_call)(void*) = &kernel_ptr[0x4408];
+	(*kernel_ptr_call)(NULL);
+	printk("we fucked up here\n");
 	while (1);
 }
