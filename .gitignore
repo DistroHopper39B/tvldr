@@ -2,7 +2,7 @@
 *.o
 initrd.img
 vmlinuz
-mach_kernel
+mach_kernel*
 debian/
 initramfs/
 initrd_tmp/
@@ -11,4 +11,5 @@ ubuntu/
 .vscode/
 .idea/
 rebuild
-vmlinuz.not
+*.not
+*.code-workspace

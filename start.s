@@ -23,5 +23,5 @@ start1:
 	pushl   %ebp
 	xorl    %ebp,%ebp
 
-	call    _load_linux
+	call    load_linux
 	hlt

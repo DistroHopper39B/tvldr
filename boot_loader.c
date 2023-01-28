@@ -100,10 +100,10 @@ void load_linux(unsigned int args)
 	//sleep(10);
 
 	// find the kernel and load it in the proper location
-	kernel_ptr = (unsigned char *) getsectdatafromheader(&_mh_execute_header, "__TEXT", "__vmlinuz", &kernel_len);
-	printk("ATV: kernel_ptr = 0x%08X, kernel_len = 0x%08X\n", kernel_ptr, kernel_len);
+	//kernel_ptr = (unsigned char *) getsectdatafromheader(&_mh_execute_header, "__TEXT", "__vmlinuz", &kernel_len);
+	//printk("ATV: kernel_ptr = 0x%08X, kernel_len = 0x%08X\n", kernel_ptr, kernel_len);
 	// kernel integrity check
-
+	/*
 	printk("ATV: kernel_ptr[0xD8] = 0x%c, kernel_ptr[0xD9] = 0x%c\n", kernel_ptr[0xD8], kernel_ptr[0xD9]);
 	if (kernel_ptr[0xD8] != 0x6f || kernel_ptr[0xD9] != 0x61) {
 		
@@ -111,10 +111,11 @@ void load_linux(unsigned int args)
 		while (1);
 		
 	}
+	*/
 	// load kernel into it in the proper location (1M)
-	kernel_start = (VOID *) 0x00100000;
+	//kernel_start = (VOID *) 0x00100000;
 	// zero kernel destination in ram memory
-	memset(kernel_start, 0x00, KERNEL_RESERVE_SIZE);
+	//memset(kernel_start, 0x00, KERNEL_RESERVE_SIZE);
 /*
 	// find possible initrd, start_kernel will handle loading into a proper location)
 	initrd_ptr   = (unsigned char *) getsectdatafromheader(&_mh_execute_header, "__TEXT", "__initrd", &initrd_len);
@@ -154,9 +155,7 @@ void load_linux(unsigned int args)
 */
 
 
-
-	void (*kernel_ptr_call)(void*) = &kernel_ptr[0x4408];
-	(*kernel_ptr_call)(NULL);
+	printk("bruh");
 	printk("we fucked up here\n");
 	while (1);
 }

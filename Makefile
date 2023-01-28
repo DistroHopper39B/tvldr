@@ -6,35 +6,29 @@
 #
 ARCH	= i386
 
-CC  := i386-apple-darwin8-clang
-LD  := i386-apple-darwin8-ld
-LDFLAGS =
+CC  := i686-linux-gnu-gcc
+LD  := i686-linux-gnu-ld
+OBJCOPY := i686-linux-gnu-objcopy
+LDFLAGS = -T mach-o.ld -melf_i386 --no-undefined -z notext --orphan-handling=warn -z nocopyreloc --gc-sections -pie
 
 # start.o must be 1st in the link order (ld below)
-OBJ	= start.o vsprintf.o console.o utils.o elilo_code.o darwin_code.o linux_code.o boot_loader.o
+OBJ2	= start.o vsprintf.o console.o utils.o elilo_code.o darwin_code.o linux_code.o boot_loader.o
+OBJ = boot_loader.o linux_code.o darwin_code.o elilo_code.o utils.o console.o vsprintf.o start.o
 
 mach_kernel: $(KERN_OBJ) $(OBJ)
-	$(LD) $(LDFLAGS) -arch $(ARCH) -o mach_kernel $(OBJ) \
-	-static \
-        -macosx_version_min 10.4 \
-	-force_cpusubtype_ALL \
-	-e __start \
-	-segalign 0x1000 \
-	-segaddr __TEXT 0x2000000 \
-	-sectalign __TEXT __text 0x1000 \
-	-sectalign __DATA __common 0x1000 \
-	-sectalign __DATA __bss 0x1000 \
-	-sectcreate __PRELINK __text /dev/null \
-	-sectcreate __PRELINK __symtab /dev/null \
-	-sectcreate __PRELINK __info /dev/null \
-        -sectcreate __TEXT __vmlinuz vmlinuz \
-        -sectcreate __TEXT __initrd initrd.img
+	$(LD) $(LDFLAGS) -o mach_kernel.elf $(OBJ) \
+	-static
 
 %.o:	%.c
-	$(CC) -c -arch $(ARCH) -static -nostdlib -fno-stack-protector -O0 -o $@ -c $<
+	$(CC) -c -static -nostdlib -fno-stack-protector -O0 -o $@ -c $<
 
 %.o:	%.s
-	$(CC) -c -arch $(ARCH) -static -nostdlib -DASSEMBLER -o $@ -c $<
+	$(CC) -c -static -nostdlib -DASSEMBLER -o $@ -c $<
+macho:  mach_kernel.elf
+	$(OBJCOPY) -O binary --strip-debug mach_kernel.elf mach_kernel
 
 clean:
-	rm -f *.o mach_kernel
+	rm -f *.o mach_kernel*
+#         -sectcreate __TEXT __vmlinuz vmlinuz \
+        -sectcreate __TEXT __initrd initrd.img
+# -e must be accounted for.
